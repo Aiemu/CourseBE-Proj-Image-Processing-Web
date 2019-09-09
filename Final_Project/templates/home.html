@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <a href="/logout/">注销</a>
+    <form method="POST" action="/upload/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <span>选择图片</span><input type="file" name="img">
+        <br>
+        <button>上传</button>
+    </form>
+    <a href="/history/">历史记录</a>
+{% endblock %}
