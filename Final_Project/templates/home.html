@@ -1,12 +1,265 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
-{% block content %}
-    <a href="/logout/">注销</a>
-    <form method="POST" action="/upload/" enctype="multipart/form-data">
+    <title>Carousel Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+      <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+    <style> 
+      .centertext{text-align:center}
+      .imageurl{display: inline}
+      .rightalign{text-align:right}
+    </style> 
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body onLoad="scrollTo(0, 0)">
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand">Image Processing Platform</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="/history/">History</a></li>
+                <li style="min-width: 590px">&nbsp;</li>
+                <li><a href="/logout/" class="rightalign">Log out</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner" role="listbox" style="background-position: top right; padding-top: 0">
+        <div class="item active">
+          <img class="first-slide" src="{% static 'images/3.jpg' %}" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Image Processing Platform</h1>
+              <p>This is a platform for image processing.<br><br><br>___built at back-end course<br><br><br><br></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <h2>Segmentation</h2>
+          <p><br>With this, <br>you can segmentate a picture<br><br></p>
+          <p><a class="btn btn-default" href="#SEG" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <h2>Detection</h2>
+          <p><br>Try to detect a picture by this<br><br></p>
+          <p><a class="btn btn-default" href="#DET" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <h2>StyleTransition</h2>
+          <p><br>This is a tool transforms a picture to another style, <br>but you will consume much time on it.<br><br></p>
+          <p><a class="btn btn-default" href="#STY" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider" id="SEG">
+      <form method="POST" action="/upload/" enctype="multipart/form-data">
         {% csrf_token %}
-        <span>选择图片</span><input type="file" name="img">
-        <br>
-        <button>上传</button>
-    </form>
-    <a href="/history/">历史记录</a>
-{% endblock %}
+        <div class="row featurette">
+          <div class="col-md-7 col-md-push-5">
+            <h2 class="featurette-heading">Segme<span class="text-muted">ntation</span></h2>
+            <p class="lead"><br>Function: to segmentate a picture<br><br>Input: a picture you want to segmentate<br><br>Output: a picture show the result</p>
+            <div>
+              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a picture</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <div class="lead">
+                <br>&nbsp; Or
+              </div>
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <label for="imputImgurl" class="sr-only">Imgurl</label>
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus> 
+                  <br>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 col-md-pull-7">
+            <p class="lead">
+              Ori:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <p class="lead">
+                <br>Now:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+          </div>
+        </div>
+      </form>
+
+      <hr class="featurette-divider" id="DET">
+
+        <div class="row featurette">
+          <div class="col-md-7 col-md-push-5">
+            <h2 class="featurette-heading">Dete<span class="text-muted">ction</span></h2>
+            <p class="lead"><br>Function: to detect a picture and mark the item in the picture<br><br>Input: a picture you want to detect<br><br>Output: a picture show the marked picture</p>
+            <div>
+              <button class="btn btn-lg btn-primary imageurl"  name="img" type="file">Choose a picture</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <div class="lead">
+                <br>&nbsp; Or
+              </div>
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <label for="imputImgurl" class="sr-only">Imgurl</label>
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus>  
+                  <br>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 col-md-pull-7">
+            <p class="lead">
+              Ori:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <p class="lead">
+              <br>Now:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+          </div>
+        </div>
+      </form>
+
+      <hr class="featurette-divider" id="STY">
+
+        <div class="row featurette">
+          <div class="col-md-7 col-md-push-5">
+            <h2 class="featurette-heading">Style<span class="text-muted">Transition</span></h2>
+            <p class="lead"><br>Function: to transform a picture to another style<br><br>Input: two picture,one for style and one for content<br><br>Output: a picture show the result</p>
+            <div>
+              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a picture</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a style picture</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <div class="lead">
+                <br>&nbsp; Or
+              </div>
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <label for="imputImgurl" class="sr-only">Imgurl</label>
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus>  
+                  <br>
+                  <label for="imputImgurl" class="sr-only">Imgurl</label>
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of style image" required autofocus>  
+                  <br>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/sty/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>       
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 col-md-pull-7">
+            <p class="lead">
+              Ori:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">      
+            <p class="lead">
+              <br>Style:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <p class="lead">
+              <br>Now:
+            </p>
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+          </div>
+        </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2019 THU SS.</p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="../../assets/js/vendor/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

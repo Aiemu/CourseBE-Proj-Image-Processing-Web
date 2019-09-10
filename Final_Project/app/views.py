@@ -14,11 +14,17 @@ def logon(request):
         if username and password:
             filter_result = User.objects.filter(username=username)
             if filter_result:
-                message = "该用户已经注册过"
+                message = "Error : The username already exists"
                 return render(request, 'logon.html', {"message": message})
             else:
                 User.objects.create_user(username=username, password=password)
                 return redirect('/login/')
+        elif not username:
+            message = "Require a username"
+            return render(request, 'logon.html', {"message": message})
+        elif not password:
+            message = "Require a password"
+            return render(request, 'logon.html', {"message": message})
     return render(request, 'logon.html')
 
 
@@ -29,15 +35,21 @@ def login(request):
         if username and password:
             user = User.objects.filter(username=username).first()
             if not user:
-                message = "该用户不存在"
+                message = "Error : This user doesn't exist"
                 return render(request, 'login.html', {"message": message})
             user = auth.authenticate(username=username, password=password)
             if user:
                 auth.login(request, user)
                 return redirect('/home/')
             else:
-                message = "密码错误"
+                message = "Error : Wrong password"
                 return render(request, 'login.html', {"message": message})
+        elif not username:
+            message = "Require a username"
+            return render(request, 'login.html', {"message": message})
+        elif not password:
+            message = "Require a password"
+            return render(request, 'login.html', {"message": message})
     return render(request, 'login.html')
 
 
@@ -75,6 +87,15 @@ def upload(request):
         img = request.FILES.get('img')
         Record.objects.create(upload=img)
         return render(request, 'home.html')
+
+def seg():
+    pass
+
+def det():
+    pass
+
+def sty():
+    pass
 
 
 
