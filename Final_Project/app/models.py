@@ -5,7 +5,10 @@ from django.db import models
 
 class Record(models.Model):
     upload = models.ImageField(upload_to='1')
-    dispose = models.ImageField(upload_to='2')
-    time = models.DateField(auto_now_add=True)
+    seg = models.CharField(max_length=128)
+    det = models.CharField(max_length=128)
+    sty = models.CharField(max_length=128)
+    operation = models.CharField(max_length=32)
+    time = models.DateTimeField(auto_now_add=True)
     username = models.CharField(max_length=32)
 

@@ -1,23 +1,250 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
 
-{% block content %}
-    <a href="/logout/">注销</a>
-    <ul>
-        {% for record in record_list %}
-            <li>{{ record.time }}</li>
-            <li><img src="{{ upload_path }}"></li>
-        {% endfor %}
-    </ul>
-    <ul class="pagination">
-        {% for num in paginator.page_range %}
-            {% if num == current_page %}
-                <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
-            {% else %}
-                <li><a href="?page={{ num }}">{{ num }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Dashboard | Nadhif - Responsive Admin Template</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'dist/bootstrap-table.min.css' %}">
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'dist/bootstrap-table.min.js' %}"></script>
+        <script src="{% static 'dist/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+    </head>
 
-    <a href="/upload/">上传图片</a>
-{% endblock %}
+    <body> 
+            <style>
+              .select,
+              #locale {
+                width: 100%;
+              }
+              .like {
+                margin-right: 10px;
+              }
+            </style>
+            
+            <div id="toolbar">
+              <button id="remove" class="btn btn-danger" disabled>
+                <i class="glyphicon glyphicon-remove"></i> Delete
+              </button>
+              <a href="/home/">
+                <button id="remove" class="btn btn-default">
+                  <i class="glyphicon glyphicon-home"></i> Return
+                </button>
+              </a>
+            </div>
+            <table
+              id="table"
+              data-method="post"
+              data-toolbar="#toolbar"
+              data-search="true"
+              data-show-refresh="true"
+              data-show-toggle="true"
+              data-show-fullscreen="true"
+              data-show-columns="true"
+              data-detail-view="true"
+              data-show-export="true"
+              data-click-to-select="true"
+              data-detail-formatter="detailFormatter"
+              data-minimum-count-columns="2"
+              data-show-pagination-switch="true"
+              data-pagination="true"
+              data-id-field="id"
+              data-page-list="[10, 25, 50, 100, all]"
+              data-show-footer="true"
+              data-side-pagination="client"
+              
+              data-response-handler="responseHandler">
+            </table>
+            <!-- data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data" -->
+            <script>
+              var $table = $('#table')
+              var $remove = $('#remove')
+              var selections = []
+            
+              function post(URL, PARAMS) {
+                var temp = document.createElement("form");
+                temp.action = URL;
+                temp.method = "post";
+                temp.style.display = "none";
+                for (var x in PARAMS) {
+                  var opt = document.createElement("textarea");
+                  opt.name = x;
+                  opt.value = PARAMS[x];
+                  // alert(opt.name)
+                  temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                return temp;
+              }
 
+              function getIdSelections() {
+                return $.map($table.bootstrapTable('getSelections'), function (row) {
+                  return row.id
+                })
+              }
+            
+              function responseHandler(res) {
+                console.log(res);
+              if (res == 0) {
+                  alert('查询出问题！');
+              } else {
+                  var orderListData = res['rows'];  //##### 重要！！#####
+                  return orderListData;
+              }
+              }
+            
+              function detailFormatter(index, row) {
+                var html = []
+                $.each(row, function (key, value) {
+                  html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                })
+                return html.join('')
+              }
+            
+              function operateFormatter(value, row, index) {
+                return [
+                  '<a class="like" href="javascript:void(0)" title="Like">',
+                  '<i class="fa fa-heart"></i>',
+                  '</a>  ',
+                  '<a class="remove" href="javascript:void(0)" title="Remove">',
+                  '<i class="fa fa-trash"></i>',
+                  '</a>'
+                ].join('')
+              }
+            
+              window.operateEvents = {
+                'click .like': function (e, value, row, index) {
+                  alert('You click like action, row: ' + JSON.stringify(row))
+                },
+                'click .remove': function (e, value, row, index) {
+                  $table.bootstrapTable('remove', {
+                    field: 'id',
+                    values: [row.id]
+                  })
+                }
+              }
+            
+              function totalTextFormatter(data) {
+                return 'Total'
+              }
+            
+              function totalNameFormatter(data) {
+                return data.length
+              }
+            
+              function totalPriceFormatter(data) {
+                var field = this.field
+                return '$' + data.map(function (row) {
+                  return +row[field].substring(1)
+                }).reduce(function (sum, i) {
+                  return sum + i
+                }, 0)
+              }
+            
+              function imageFormatter(data) {
+                var path = "<img src=\"../media/" + data + "\"width=100 height=100>"
+                return path
+              }
+
+              function initTable() {
+                $table.bootstrapTable('destroy').bootstrapTable({
+                    url: "getdata/",
+                    height: 550,
+                    locale: $('#locale').val(),
+                    columns: [
+                    [{
+                      field: 'state',
+                      checkbox: true,
+                      rowspan: 2,
+                      align: 'center',
+                      valign: 'middle'
+                    }, {
+                      title: 'ID',
+                      field: 'id',
+                      rowspan: 2,
+                      align: 'center',
+                      valign: 'middle',
+                      sortable: true,
+                    }, {
+                      title: 'Time',
+                      field: 'time',
+                      rowspan: 2,
+                      align: 'center',
+                      valign: 'middle',
+                      sortable: true,
+                    }, {
+                      title: 'Image Detail',
+                      colspan: 3,
+                      align: 'center'
+                    }],
+                    [{
+                      field: 'operation',
+                      title: 'Operation',
+                      align: 'center'
+                    }, {
+                      field: 'upload',
+                      title: 'Ori Image',
+                      align: 'center',
+                      formatter: "imageFormatter"
+                    }, {
+                      field: 'output',
+                      title: 'New Image',
+                      align: 'center',
+                      formatter: "imageFormatter"
+                    }]
+                  ]
+                })
+                $table.on('check.bs.table uncheck.bs.table ' +
+                  'check-all.bs.table uncheck-all.bs.table',
+                
+                  function () {
+                  $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+            
+                  // save your data, here just save the current page
+                  selections = getIdSelections()
+                  // push or splice the selections if you want to save all data selections
+                })
+                $table.on('all.bs.table', function (e, name, args) {
+                  console.log(name, args)
+                })
+                $remove.click(function () {
+                  var ids = getIdSelections()
+                  post('delete/', {"ids": ids})
+                  // var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+                  // httpRequest.open('POST', 'delete/', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+                  // httpRequest.setRequestHeader("Content-type","application/json");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头
+                  // var obj = { "ids": ids };
+                  // console.log(obj)
+                  // httpRequest.send(JSON.stringify(obj));//发送请求 将json写入send中
+                  // /**
+                  //  * 获取数据后的处理程序
+                  //  */
+                  // httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+                  //     if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功
+                  //         var json = httpRequest.responseText;//获取到服务端返回的数据
+                  //         console.log(json);
+                  //     }
+                  //     else {
+                  //       console.log('POST fails')
+                  //     }
+                  // };
+                  $table.bootstrapTable('remove', {
+                    field: 'id',
+                    values: ids
+                  })
+                  $remove.prop('disabled', true)
+                })
+              }
+            
+              $(function() {
+                initTable()
+            
+                $('#locale').change(initTable)
+              })
+            </script>
+    </body>
+
+</html>

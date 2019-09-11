@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 ssl._create_default_https_context = ssl._create_unverified_context
 
 def segmentation(ipath):
+    ipath = "media/" + ipath
     image = skimage.io.imread(ipath, plugin='matplotlib')
     image = skimage.transform.resize(image, (400, 400), anti_aliasing=True)
     image = numpy.transpose(image, (2, 0, 1))
@@ -20,9 +21,9 @@ def segmentation(ipath):
     IMAGE = IMAGE['out']
     IMAGE = IMAGE.squeeze(0).argmax(0)
 
-    path = 'output/seg/' + ipath
+    ipath_list = ipath.split('/')
+    path = 'media/seg/' + ipath_list[-1]
     plt.imsave(path, IMAGE)
-    return path
-
-path = '1.jpg'
-segmentation(path)
+    ret = 'seg/' + ipath_list[-1]
+    return ret
+  

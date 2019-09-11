@@ -57,9 +57,10 @@
               <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#about">About</a></li>
+                {% csrf_token %}
                 <li><a href="/history/">History</a></li>
-                <li style="min-width: 590px">&nbsp;</li>
-                <li><a href="/logout/" class="rightalign">Log out</a></li>
+                <li style="min-width: 572px">&nbsp;</li>
+                <li><a href="/logout/" class="rightalign"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
               </ul>
             </div>
           </div>
@@ -95,19 +96,19 @@
       <!-- Three columns of text below the carousel -->
       <div class="row">
         <div class="col-lg-4">
-          <img class="img-circle" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <img class="img-circle" src="{% static 'images/1.jpg' %}" alt="Sample" width="140" height="140">
           <h2>Segmentation</h2>
           <p><br>With this, <br>you can segmentate a picture<br><br></p>
           <p><a class="btn btn-default" href="#SEG" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <img class="img-circle" src="{% static 'images/2.jpg' %}" alt="Sample" width="140" height="140">
           <h2>Detection</h2>
           <p><br>Try to detect a picture by this<br><br></p>
           <p><a class="btn btn-default" href="#DET" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="140" height="140">
+          <img class="img-circle" src="{% static 'images/3.jpg' %}" alt="Sample" width="140" height="140">
           <h2>StyleTransition</h2>
           <p><br>This is a tool transforms a picture to another style, <br>but you will consume much time on it.<br><br></p>
           <p><a class="btn btn-default" href="#STY" role="button">View details &raquo;</a></p>
@@ -118,42 +119,53 @@
       <!-- START THE FEATURETTES -->
 
       <hr class="featurette-divider" id="SEG">
-      <form method="POST" action="/upload/" enctype="multipart/form-data">
-        {% csrf_token %}
         <div class="row featurette">
           <div class="col-md-7 col-md-push-5">
             <h2 class="featurette-heading">Segme<span class="text-muted">ntation</span></h2>
             <p class="lead"><br>Function: to segmentate a picture<br><br>Input: a picture you want to segmentate<br><br>Output: a picture show the result</p>
             <div>
-              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a picture</button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"><img src="index.png"alt=""></label>
+                    <div class="col-sm-5 ">
+                      <label for="file1"class=" btn btn-primary btn-lg">Choose a picture</label>
+                      <input name="img" id="file1" type="file">
+                    </div>
+                  </div>
+                  <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/home/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                </form>  
+              </div>
+
               <div class="lead">
                 <br>&nbsp; Or
               </div>
+
               <div>
                 <form method="POST" action="/upload/" enctype="multipart/form-data">
                   {% csrf_token %}
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
-                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus> 
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus> 
                   <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </form>
               </div>
+              
             </div>
           </div>
           <div class="col-md-5 col-md-pull-7">
             <p class="lead">
               Ori:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <img class="featurette-image img-responsive center-block" src="{{ upload_path_1 }}" alt="Sample" width="300" height="300">
             <p class="lead">
                 <br>Now:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/1.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <img class="featurette-image img-responsive center-block" src="{{ seg_path }}" alt="Sample" width="300" height="300">
           </div>
         </div>
-      </form>
 
       <hr class="featurette-divider" id="DET">
 
@@ -162,32 +174,51 @@
             <h2 class="featurette-heading">Dete<span class="text-muted">ction</span></h2>
             <p class="lead"><br>Function: to detect a picture and mark the item in the picture<br><br>Input: a picture you want to detect<br><br>Output: a picture show the marked picture</p>
             <div>
-              <button class="btn btn-lg btn-primary imageurl"  name="img" type="file">Choose a picture</button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label"><imgsrc="index.png"alt=""></label>
+                      <div class="col-sm-5 ">
+                        <label for="file2"class=" btn btn-primary btn-lg">Choose a picture</label>
+                        <input name="img" id="file2" type="file">
+                      </div>
+                    </div>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                </form>  
+              </div>
+
               <div class="lead">
                 <br>&nbsp; Or
               </div>
+
               <div>
                 <form method="POST" action="/upload/" enctype="multipart/form-data">
                   {% csrf_token %}
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
-                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus>  
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus>  
                   <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </form>
               </div>
+
             </div>
           </div>
           <div class="col-md-5 col-md-pull-7">
             <p class="lead">
               Ori:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <!-- <script>
+              function imgerror(img){
+                img.src="{% static 'images/2.jpg' %}";
+                img.οnerrοr=null;
+              }
+            </script> -->
+            <img class="featurette-image img-responsive center-block" src="{{ upload_path_2 }}" alt="Sample" width="300" height="300">
             <p class="lead">
               <br>Now:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/2.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <img class="featurette-image img-responsive center-block" src="{{ det_path }}" alt="Sample" width="300" height="300">
           </div>
         </div>
       </form>
@@ -197,43 +228,52 @@
         <div class="row featurette">
           <div class="col-md-7 col-md-push-5">
             <h2 class="featurette-heading">Style<span class="text-muted">Transition</span></h2>
-            <p class="lead"><br>Function: to transform a picture to another style<br><br>Input: two picture,one for style and one for content<br><br>Output: a picture show the result</p>
+            <p class="lead"><br>Function: to transform a picture to another style<br><br>Input: a picture for content, <font color="red">note that the picture must be square</font><br><br>Output: a picture show the result</p>
             <div>
-              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a picture</button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-lg btn-primary imageurl" name="img" type="file">Choose a style picture</button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button class="btn btn-lg btn-primary imageurl" onclick="form.action='/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+              <div>
+                <form method="POST" action="/upload/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label"><imgsrc="index.png"alt=""></label>
+                      <div class="col-sm-5 ">
+                        <label for="file3" class="btn btn-primary btn-lg">Choose a picture</label>
+                        <input name="img" id="file3" type="file">
+                      </div>
+                    </div>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/sty/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                </form>
+              </div>
+
               <div class="lead">
                 <br>&nbsp; Or
               </div>
+
               <div>
                 <form method="POST" action="/upload/" enctype="multipart/form-data">
                   {% csrf_token %}
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
-                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of image" required autofocus>  
+                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus>  
                   <br>
-                  <label for="imputImgurl" class="sr-only">Imgurl</label>
-                  <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control" placeholder="ulr of style image" required autofocus>  
-                  <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/sty/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>       
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/sty/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>       
                 </form>
               </div>
+
             </div>
           </div>
           <div class="col-md-5 col-md-pull-7">
             <p class="lead">
               Ori:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">      
+            <img class="featurette-image img-responsive center-block" src="{{ upload_path_3 }}" alt="Sample" width="300" height="300">
             <p class="lead">
               <br>Style:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <img class="featurette-image img-responsive center-block" src="{% static 'images/style.jpg' %}" alt="Sample" width="300" height="300">
             <p class="lead">
               <br>Now:
             </p>
-            <img class="featurette-image img-responsive center-block" src="{% static 'images/3.jpg' %}" alt="Generic placeholder image" width="500" height="500">
+            <img class="featurette-image img-responsive center-block" src="{{ sty_path }}" alt="Sample" width="300" height="300">
           </div>
         </div>
 
