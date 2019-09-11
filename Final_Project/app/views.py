@@ -5,7 +5,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Record
 from nn import Segmentation, Detection, StyleTransition
 from django.http import JsonResponse, HttpResponse
+from tempfile import TemporaryFile
+from os.path import basename
+from urllib.parse import urlsplit
+from django.core.files import File
 import json
+import requests
 
 # Create your views here.
 def logon(request):
@@ -95,8 +100,6 @@ def get_data(request):
         output = record.seg + record.det + record.sty
         dataset.append({'id': record.id, 'time': str(record.time), 'operation': record.operation, 'upload': str(record.upload), 'output': output})
     js = json.dumps({"total": i, "totalNotFiltered": i, "rows": dataset}, sort_keys=True, indent=4, separators=(',', ': '))
-    with open("media/data.json", "w") as fo:
-        fo.writelines(js)
     return HttpResponse(js)
 
 def upload(request):
@@ -107,6 +110,15 @@ def upload(request):
         username = request.user.username
         Record.objects.create(upload=img, username=username)
         return render(request, 'home.html')
+
+def download_to_file_field(url, field):   
+    with TemporaryFile() as tf:        
+        r = requests.get(url, stream=True)        
+        for chunk in r.iter_content(chunk_size=4096):            
+            tf.write(chunk)        
+        tf.seek(0)        
+        field.save(basename(urlsplit(url).path), File(tf))
+
 
 def seg(request):
     if not request.user.is_authenticated:
@@ -128,6 +140,27 @@ def seg(request):
         record.save()
         return render(request, 'home.html',locals())
 
+
+def segurl(request):
+    if not request.user.is_authenticated:
+        return redirect('/login/')
+    if request.method == 'POST':
+        username = request.user.username
+        operation = "Segmentation"
+        record = Record.objects.create(username=username, operation=operation)
+        url = request.POST.get('imgurl')
+        download_to_file_field(url, record.upload)
+        path = str(record.upload)
+        ret = Segmentation.segmentation(path)
+        record.seg = ret
+        upload_path_1 = '/media/' + str(record.upload)
+        seg_path = '/media/' + record.seg + record.sty + record.det
+        if not seg_path:
+            return render(request, 'home.html')
+        record.save()
+        return render(request, 'home.html',locals())
+
+
 def det(request):
     if not request.user.is_authenticated:
         return redirect('/login/')
@@ -148,6 +181,26 @@ def det(request):
         record.save()
         return render(request, 'home.html', locals())
 
+def deturl(request):
+    if not request.user.is_authenticated:
+            return redirect('/login/')
+    if request.method == 'POST':
+        username = request.user.username
+        operation = "Detection"
+        record = Record.objects.create(username=username, operation=operation)
+        url = request.POST.get('imgurl')
+        download_to_file_field(url, record.upload)
+        path = str(record.upload)
+        ret = Detection.detection(path)
+        record.det = ret
+        upload_path_2 = '/media/' + str(record.upload)
+        det_path = '/media/' + record.seg + record.sty + record.det
+        if not det_path:
+            return render(request, 'home.html')
+        record.save()
+        return render(request, 'home.html', locals())
+
+
 def sty(request):
     if not request.user.is_authenticated:
         return redirect('/login/')
@@ -160,7 +213,26 @@ def sty(request):
         record = Record.objects.create(upload=img, username=username, operation=operation)
         path = str(record.upload)
         ret = StyleTransition.styletransition(path)
-        record.ret = ret
+        record.sty = ret
+        upload_path_3 = '/media/' + str(record.upload)
+        sty_path = '/media/' + record.seg + record.sty + record.det
+        if not sty_path:
+            return render(request, 'home.html')
+        record.save()
+        return render(request, 'home.html', locals())
+
+def styurl(request):
+    if not request.user.is_authenticated:
+            return redirect('/login/')
+    if request.method == 'POST':
+        username = request.user.username
+        operation = "StyleTransition"
+        record = Record.objects.create(username=username, operation=operation)
+        url = request.POST.get('imgurl')
+        download_to_file_field(url, record.upload)
+        path = str(record.upload)
+        ret = StyleTransition.styletransition(path)
+        record.sty = ret
         upload_path_3 = '/media/' + str(record.upload)
         sty_path = '/media/' + record.seg + record.sty + record.det
         if not sty_path:

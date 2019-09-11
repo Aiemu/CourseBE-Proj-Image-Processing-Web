@@ -31,6 +31,9 @@ urlpatterns = [
     path('history/', views.history),
     path('upload/', views.upload),
     path('home/seg/',views.seg),
+    path('home/segurl/', views.segurl),
     path('home/det/',views.det),
+    path('home/deturl/',views.deturl),
     path('home/sty/',views.sty),
+    path('home/styurl/',views.styurl),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 

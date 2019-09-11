@@ -1,0 +1,13 @@
+{
+    "rows": [
+        {
+            "id": 115,
+            "operation": "Segmentation",
+            "output": "seg/style.jpg",
+            "time": "2019-09-11 19:36:09.742499",
+            "upload": "1/style.jpg"
+        }
+    ],
+    "total": 1,
+    "totalNotFiltered": 1
+}

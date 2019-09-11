@@ -75,7 +75,7 @@
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner" role="listbox" style="background-position: top right; padding-top: 0">
         <div class="item active">
-          <img class="first-slide" src="{% static 'images/3.jpg' %}" alt="First slide">
+          <img class="first-slide" src="{% static 'images/background.jpg' %}" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Image Processing Platform</h1>
@@ -108,7 +108,7 @@
           <p><a class="btn btn-default" href="#DET" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="{% static 'images/3.jpg' %}" alt="Sample" width="140" height="140">
+          <img class="img-circle" src="{% static 'images/3.PNG' %}" alt="Sample" width="140" height="140">
           <h2>StyleTransition</h2>
           <p><br>This is a tool transforms a picture to another style, <br>but you will consume much time on it.<br><br></p>
           <p><a class="btn btn-default" href="#STY" role="button">View details &raquo;</a></p>
@@ -149,7 +149,7 @@
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
                   <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus> 
                   <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/seg/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/segurl/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </form>
               </div>
               
@@ -198,7 +198,7 @@
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
                   <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus>  
                   <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/det/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/deturl/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Det&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </form>
               </div>
 
@@ -255,7 +255,7 @@
                   <label for="imputImgurl" class="sr-only">Imgurl</label>
                   <input name="imgurl" type="imgurl" id="inputImgurl" class="form-control input-lg" placeholder="ulr of image" required autofocus>  
                   <br>
-                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/sty/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>       
+                  <button class="btn btn-lg btn-primary" onclick="form.action='/home/styurl/';form.submit()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>       
                 </form>
               </div>
 
