@@ -1,14 +1,30 @@
 # 图片处理网站 项目文档
 ### 实验分工
-    曾正: 基于深度学习的图像处理模块，界面的外观显示，历史记录管理模块
-    邓博文: 用户模块实现，网页后端接口的实现，前端框架搭建
+    Aiemu: 基于深度学习的图像处理模块，界面的外观显示，历史记录管理模块
+    Bo-B0: 用户模块实现，网页后端接口的实现，前端框架搭建
 
-### 部署方式
+### 部署方式及效果
+    - 部署方式
     $ pip install torch torchvision numpy matplotlib django scikit-image pillow opencv-python 
 
     $ python manager.py run server 8000
     
     之后可通过http://localhost:8000/login访问登录界⾯
+
+    - 部署效果
+1. login/
+![pic_login](https://tva1.sinaimg.cn/large/006y8mN6ly1g6x0icwrz3j31ip0u0gow.jpg)
+
+2. logon/
+![pic_logon](https://tva1.sinaimg.cn/large/006y8mN6ly1g6x0jnuhqdj31ip0u0dj3.jpg)
+
+3. home/
+![pic_home](https://tva1.sinaimg.cn/large/006y8mN6ly1g6x0kczw24j31ip0u0npe.jpg)
+
+4. history/
+![pic_history](https://tva1.sinaimg.cn/large/006y8mN6ly1g6x0l7jw8tj31ip0u0gsu.jpg)
+
+
 ### 项目开发测试环境
       后端
     - python 3.7
